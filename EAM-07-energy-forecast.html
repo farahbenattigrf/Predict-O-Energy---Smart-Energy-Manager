@@ -1,1 +1,32 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><title>Energy Alert Manager</title>
+<style>
+body{font-family:Arial;background:#101c2c;color:white;text-align:center;padding:25px}
+main{background:#1d3045;padding:25px;border-radius:15px;max-width:460px;margin:auto}
+input{padding:12px;margin:6px;width:85%;border:0;border-radius:7px}
+button{padding:12px 25px;background:#20c997;border:0;border-radius:7px;cursor:pointer}
+#result{line-height:2;margin-top:20px}
+</style></head>
+<body><main>
+<h1>⚡ Energy Manager</h1><p>Suivi et prévisions énergétiques</p>
+<input id="p" type="number" placeholder="Puissance (W)">
+<input id="h" type="number" placeholder="Heures par jour">
+<input id="j" type="number" placeholder="Jours par mois">
+<input id="t" type="number" placeholder="Prix du kWh (DT)">
+<input id="s" type="number" placeholder="Seuil mensuel (kWh)">
+<input id="v" type="number" value="10" placeholder="Évolution prévue (%)">
+<button onclick="calculer()">Analyser</button>
+<div id="result"></div>
+</main><script>
+function calculer(){
+let p=+document.getElementById('p').value,h=+document.getElementById('h').value,j=+document.getElementById('j').value,t=+document.getElementById('t').value,s=+document.getElementById('s').value,v=+document.getElementById('v').value;
+let r=document.getElementById('result');
+if(![p,h,j,t,s,v].every(Number.isFinite)||p<=0||h<=0||h>24||j<=0||j>31||t<0||s<=0||v< -100){r.innerText="Vérifiez les valeurs saisies.";return;}
+let c=p*h*j/1000,cout=c*t,pre=c*(1+v/100),cp=pre*t;
+r.innerHTML=`<hr>Consommation actuelle : ${c.toFixed(2)} kWh<br>Coût actuel : ${cout.toFixed(2)} DT<hr>Prévision : ${pre.toFixed(2)} kWh<br>Coût prévisionnel : ${cp.toFixed(2)} DT<br>Évolution : ${v}%<br>${pre>s?"⚠️ Alerte prévisionnelle !":"✅ Prévision normale"}`;
+}
+</script></body></html>
+
